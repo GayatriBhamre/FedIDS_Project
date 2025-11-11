@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FedIDS - Security Awareness</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-primary: #3b82f6;
+            --border: #475569;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo i {
+            color: var(--accent-primary);
+        }
+
+        .back-btn {
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        .threat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .threat-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 24px;
+            transition: all 0.2s ease;
+        }
+
+        .threat-card:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .threat-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .threat-icon {
+            font-size: 2.5em;
+            margin-right: 15px;
+            color: var(--accent-primary);
+        }
+
+        .threat-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .threat-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .threat-examples {
+            background: var(--bg-tertiary);
+            border-left: 3px solid var(--danger);
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+        }
+
+        .threat-prevention {
+            background: var(--bg-tertiary);
+            border-left: 3px solid var(--success);
+            padding: 16px;
+            border-radius: 6px;
+        }
+
+        .section-title {
+            color: var(--text-primary);
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .stats-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 32px;
+            margin-bottom: 32px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 24px;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            transition: all 0.2s ease;
+        }
+
+        .stat-item:hover {
+            background: var(--bg-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .tips-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 32px;
+        }
+
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            border-left: 3px solid var(--success);
+            transition: all 0.2s ease;
+        }
+
+        .tip-item:hover {
+            background: var(--bg-primary);
+        }
+
+        .tip-icon {
+            font-size: 1.5em;
+            color: var(--success);
+            margin-right: 16px;
+            margin-top: 2px;
+        }
+
+        .tip-content {
+            flex: 1;
+        }
+
+        .tip-title {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .severity-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .severity-critical { background: var(--danger); color: white; }
+        .severity-high { background: var(--warning); color: white; }
+        .severity-medium { background: var(--warning); color: white; }
+        .severity-low { background: var(--success); color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i> Cybersecurity Awareness
+            </div>
+            <button onclick="window.location.href='dashboard.html'" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </button>
+        </div>
+
+        <div class="threat-card" style="margin-bottom: 32px;">
+            <div class="threat-header">
+                <i class="fas fa-info-circle threat-icon"></i>
+                <div class="threat-title">Intrusions, Attacks, and What This IDS Does</div>
+            </div>
+            <div class="threat-description">
+                <strong>Intrusions</strong> are unauthorized activities on a network. <strong>Attacks</strong> are the methods used (e.g., DoS, Probe, R2L, U2R, Malware, Phishing).
+            </div>
+            <div class="threat-examples" style="border-left-color: var(--accent-primary);">
+                <strong>FedIDS in 3 points:</strong>
+                <ul style="margin: 10px 0; padding-left: 20px;">
+                    <li><strong>Detects</strong> suspicious traffic in real time.</li>
+                    <li><strong>Classifies</strong> events and assigns <em>severity</em>.</li>
+                    <li><strong>Explains</strong> decisions with feature-level insights.</li>
+                </ul>
+            </div>
+            <div class="threat-prevention">
+                <strong>Why it matters:</strong> Faster, clearer alerts help teams act sooner and reduce impact.
+            </div>
+        </div>
+
+        <div class="section-title">Common Cyber Threats & Attack Types</div>
+        
+        <div class="threat-grid">
+            <div class="threat-card">
+                <div class="threat-header">
+                    <i class="fas fa-virus threat-icon"></i>
+                    <div class="threat-title">DoS/DDoS Attacks</div>
+                </div>
+                <div class="severity-badge severity-critical">CRITICAL</div>
+                <div class="threat-description">
+                    Denial of Service attacks overwhelm systems with traffic to make services unavailable to legitimate users.
+                </div>
+                <div class="threat-examples">
+                    <strong>Examples:</strong>
+                    <ul style="margin: 10px 0; padding-left: 20px;">
+                        <li>Volume-based attacks (UDP floods)</li>
+                        <li>Protocol attacks (SYN floods)</li>
+                        <li>Application layer attacks (HTTP floods)</li>
+                    </ul>
+                </div>
+                <div class="threat-prevention">
+                    <strong>Prevention:</strong> Use DDoS protection services, rate limiting, and traffic filtering.
+                </div>
+            </div>
+
+            <div class="threat-card">
+                <div class="threat-header">
+                    <i class="fas fa-search threat-icon"></i>
+                    <div class="threat-title">Probe Attacks</div>
+                </div>
+                <div class="severity-badge severity-high">HIGH</div>
+                <div class="threat-description">
+                    Reconnaissance attacks that scan networks to discover vulnerabilities, open ports, and system information.
+                </div>
+                <div class="threat-examples">
+                    <strong>Examples:</strong>
+                    <ul style="margin: 10px 0; padding-left: 20px;">
+                        <li>Port scanning (Nmap)</li>
+                        <li>Vulnerability scanning</li>
+                        <li>Network enumeration</li>
+                    </ul>
+                </div>
+                <div class="threat-prevention">
+                    <strong>Prevention:</strong> Use firewalls, intrusion detection systems, and network segmentation.
+                </div>
+            </div>
+
+            <div class="threat-card">
+                <div class="threat-header">
+                    <i class="fas fa-key threat-icon"></i>
+                    <div class="threat-title">R2L (Remote to Local)</div>
+                </div>
+                <div class="severity-badge severity-critical">CRITICAL</div>
+                <div class="threat-description">
+                    Attacks where unauthorized users gain local access to a system from a remote location.
+                </div>
+                <div class="threat-examples">
+                    <strong>Examples:</strong>
+                    <ul style="margin: 10px 0; padding-left: 20px;">
+                        <li>Password attacks (brute force)</li>
+                        <li>Dictionary attacks</li>
+                        <li>Social engineering</li>
+                    </ul>
+                </div>
+                <div class="threat-prevention">
+                    <strong>Prevention:</strong> Strong passwords, MFA, account lockout policies, and user training.
+                </div>
+            </div>
+
+            <div class="threat-card">
+                <div class="threat-header">
+                    <i class="fas fa-shield-virus threat-icon"></i>
+                    <div class="threat-title">Malware Attacks</div>
+                </div>
+                <div class="severity-badge severity-critical">CRITICAL</div>
+                <div class="threat-description">
+                    Malicious software designed to damage, disrupt, or gain unauthorized access to computer systems.
+                </div>
+                <div class="threat-examples">
+                    <strong>Examples:</strong>
+                    <ul style="margin: 10px 0; padding-left: 20px;">
+                        <li>Ransomware</li>
+                        <li>Trojans and backdoors</li>
+                        <li>Spyware and keyloggers</li>
+                    </ul>
+                </div>
+                <div class="threat-prevention">
+                    <strong>Prevention:</strong> Antivirus software, regular updates, email filtering, and user awareness.
+                </div>
+            </div>
+
+            <div class="threat-card">
+                <div class="threat-header">
+                    <i class="fas fa-envelope threat-icon"></i>
+                    <div class="threat-title">Phishing Attacks</div>
+                </div>
+                <div class="severity-badge severity-high">HIGH</div>
+                <div class="threat-description">
+                    Social engineering attacks that trick users into revealing sensitive information or installing malware.
+                </div>
+                <div class="threat-examples">
+                    <strong>Examples:</strong>
+                    <ul style="margin: 10px 0; padding-left: 20px;">
+                        <li>Email phishing</li>
+                        <li>Spear phishing</li>
+                        <li>Whaling (CEO fraud)</li>
+                    </ul>
+                </div>
+                <div class="threat-prevention">
+                    <strong>Prevention:</strong> Email security, user training, and verification procedures.
+                </div>
+            </div>
+
+            <div class="threat-card">
+                <div class="threat-header">
+                    <i class="fas fa-user-secret threat-icon"></i>
+                    <div class="threat-title">Insider Threats</div>
+                </div>
+                <div class="severity-badge severity-medium">MEDIUM</div>
+                <div class="threat-description">
+                    Security risks that come from people within the organization who have authorized access.
+                </div>
+                <div class="threat-examples">
+                    <strong>Examples:</strong>
+                    <ul style="margin: 10px 0; padding-left: 20px;">
+                        <li>Malicious insiders</li>
+                        <li>Negligent employees</li>
+                        <li>Compromised accounts</li>
+                    </ul>
+                </div>
+                <div class="threat-prevention">
+                    <strong>Prevention:</strong> Access controls, monitoring, background checks, and training.
+                </div>
+            </div>
+        </div>
+
+        <div class="tips-section">
+            <div class="section-title">Best Practices for Cybersecurity</div>
+            
+            <div class="tip-item">
+                <i class="fas fa-lock tip-icon"></i>
+                <div class="tip-content">
+                    <div class="tip-title">Use Strong, Unique Passwords</div>
+                    <div>Create complex passwords with at least 12 characters including uppercase, lowercase, numbers, and symbols. Use a different password for each account.</div>
+                </div>
+            </div>
+
+            <div class="tip-item">
+                <i class="fas fa-shield-alt tip-icon"></i>
+                <div class="tip-content">
+                    <div class="tip-title">Enable Multi-Factor Authentication (MFA)</div>
+                    <div>Add an extra layer of security by requiring a second form of verification beyond just your password.</div>
+                </div>
+            </div>
+
+            <div class="tip-item">
+                <i class="fas fa-download tip-icon"></i>
+                <div class="tip-content">
+                    <div class="tip-title">Keep Software Updated</div>
+                    <div>Regularly update your operating system, applications, and security software to patch known vulnerabilities.</div>
+                </div>
+            </div>
+
+            <div class="tip-item">
+                <i class="fas fa-wifi tip-icon"></i>
+                <div class="tip-content">
+                    <div class="tip-title">Secure Your Network</div>
+                    <div>Use WPA3 encryption for Wi-Fi, avoid public Wi-Fi for sensitive activities, and consider using a VPN.</div>
+                </div>
+            </div>
+
+            <div class="tip-item">
+                <i class="fas fa-database tip-icon"></i>
+                <div class="tip-content">
+                    <div class="tip-title">Regular Data Backups</div>
+                    <div>Follow the 3-2-1 rule: 3 copies of important data, on 2 different media types, with 1 copy stored offsite.</div>
+                </div>
+            </div>
+
+            <div class="tip-item">
+                <i class="fas fa-eye tip-icon"></i>
+                <div class="tip-content">
+                    <div class="tip-title">Stay Vigilant</div>
+                    <div>Be suspicious of unexpected emails, links, or attachments. Verify requests for sensitive information through alternative channels.</div>
+                </div>
+            </div>
+
+            <div class="tip-item">
+                <i class="fas fa-graduation-cap tip-icon"></i>
+                <div class="tip-content">
+                    <div class="tip-title">Continuous Learning</div>
+                    <div>Stay informed about the latest threats and security practices. Attend cybersecurity training and awareness programs.</div>
+                </div>
+            </div>
+
+            <div class="tip-item">
+                <i class="fas fa-chart-line tip-icon"></i>
+                <div class="tip-content">
+                    <div class="tip-title">Monitor Your Accounts</div>
+                    <div>Regularly check your accounts for suspicious activity and set up alerts for unusual transactions or login attempts.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('fedids_token');
+            if (!token) {
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Add some interactive effects
+        document.querySelectorAll('.threat-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+    <footer class="site-footer" style="margin-top: 24px; padding: 12px 16px; border-top: 1px solid var(--border); color: var(--text-secondary); text-align: center; font-size: 12px;">
+        &copy; <span id="year"></span> Privacy-Preserving Intrusion Detection System using Federated Learning
+    </footer>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

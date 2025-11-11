@@ -1,0 +1,17 @@
+{
+  "num_clients": 3,
+  "num_rounds": 15,
+  "local_epochs": 10,
+  "learning_rate": 0.01,
+  "batch_size": 32,
+  "l2_reg": 0.001,
+  "noise_std": 0.1,
+  "train_split": 0.8,
+  "target_col": "label",
+  "class_names": [
+    "Normal",
+    "DoS",
+    "Probe",
+    "R2L"
+  ]
+}

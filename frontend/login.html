@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FedIDS - Security Operations Center</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-primary: #3b82f6;
+            --border: #475569;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 48px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 12px 24px;
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .login-button:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        .alert {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--danger);
+            color: var(--danger);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: var(--text-secondary);
+            margin-top: 16px;
+            font-size: 14px;
+        }
+
+        .loading i {
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .footer {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 12px;
+            margin-bottom: 16px;
+        }
+
+        .credentials {
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .credentials strong {
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 32px 24px;
+                margin: 16px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="signup-link">
+                    Don't have an account? <a href="signup.html">Create one here</a>
+                </div>
+                <span>FedIDS</span>
+            </div>
+            <div class="subtitle">Security Operations Center</div>
+        </div>
+
+        <div class="alert" id="alert">
+            <span id="alert-message">Invalid credentials. Please try again.</span>
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label class="form-label" for="username">Username</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    class="form-input"
+                    placeholder="Enter your username" 
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    class="form-input"
+                    placeholder="Enter your password" 
+                    required
+                >
+            </div>
+
+            <button type="submit" class="login-button">
+                <i class="fas fa-sign-in-alt"></i>
+                Sign In
+            </button>
+
+            <div class="loading" id="loading">
+                <i class="fas fa-spinner"></i>
+                Authenticating...
+            </div>
+        </form>
+
+        <div class="footer">
+            <div class="footer-text">Demo Credentials</div>
+            <div class="credentials">
+                <div><strong>Admin:</strong> admin / admin123</div>
+                <div><strong>Analyst:</strong> analyst / analyst123</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const alertDiv = document.getElementById('alert');
+            const loadingDiv = document.getElementById('loading');
+            
+            loadingDiv.style.display = 'block';
+            alertDiv.style.display = 'none';
+            
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    localStorage.setItem('fedids_token', data.token);
+                    localStorage.setItem('fedids_user', JSON.stringify(data.user));
+                    window.location.href = 'dashboard.html';
+                } else {
+                    document.getElementById('alert-message').textContent = data.message;
+                    alertDiv.style.display = 'block';
+                }
+            } catch (error) {
+                document.getElementById('alert-message').textContent = 'Connection error. Please ensure the backend is running.';
+                alertDiv.style.display = 'block';
+            }
+            
+            loadingDiv.style.display = 'none';
+        });
+    </script>
+    
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
