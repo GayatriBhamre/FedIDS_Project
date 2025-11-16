@@ -264,6 +264,7 @@
     </div>
 
     <script>
+        const API_BASE = (window.FEDIDS_API_BASE || localStorage.getItem('fedids_api_base') || ((location.origin && location.origin.startsWith('http')) ? location.origin : 'http://localhost:5000'));
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -276,7 +277,7 @@
             alertDiv.style.display = 'none';
             
             try {
-                const response = await fetch('/api/login', {
+                const response = await fetch(`${API_BASE}/api/login`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

@@ -18,6 +18,12 @@ import jwt
 from functools import wraps
 import json
 import os
+try:
+    import eventlet
+    eventlet.monkey_patch()
+    SOCKET_ASYNC_MODE = 'eventlet'
+except Exception:
+    SOCKET_ASYNC_MODE = 'threading'
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FRONTEND_DIR = os.path.join(BASE_DIR, '..', 'frontend')
@@ -33,7 +39,7 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
     return response
 
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode=SOCKET_ASYNC_MODE)
 
 
 active_connections = 0

@@ -129,7 +129,7 @@
             padding: 12px 24px;
             color: var(--text-secondary);
             text-decoration: none;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 500;
             transition: all 0.2s ease;
             border-left: 3px solid transparent;
@@ -650,13 +650,13 @@
 
         .status-label {
             color: var(--text-secondary);
-            font-size: 0.9em;
+            font-size: 1.05em;
         }
 
         .status-value {
             color: var(--success);
             font-weight: 600;
-            font-size: 0.9em;
+            font-size: 1.05em;
         }
 
         /* Site footer */
@@ -666,7 +666,7 @@
             border-top: 1px solid var(--border);
             color: var(--text-secondary);
             text-align: center;
-            font-size: 12px;
+            font-size: 16px;
         }
     </style>
 </head>
@@ -750,7 +750,7 @@
                 <h3>
                     <i class="fas fa-chart-line"></i> Threat Detection Timeline
                 </h3>
-                <div id="threat-timeline" style="height: 300px;"></div>
+                <div id="threat-timeline" style="height: 420px;"></div>
             </div>
 
             <div class="content-grid" style="margin-top: 24px;">
@@ -758,13 +758,13 @@
                     <h3>
                         <i class="fas fa-bolt"></i> Intrusion Types Distribution
                     </h3>
-                    <div id="attack-type-chart" style="height: 320px;"></div>
+                    <div id="attack-type-chart" style="height: 420px;"></div>
                 </div>
                 <div class="chart-container">
                     <h3>
                         <i class="fas fa-exclamation-circle"></i> Severity Breakdown
                     </h3>
-                    <div id="severity-pie-chart" style="height: 320px;"></div>
+                    <div id="severity-pie-chart" style="height: 420px;"></div>
                 </div>
             </div>
 
@@ -811,6 +811,7 @@
     </div>
 
     <script>
+        const API_BASE = (location.origin && location.origin.startsWith('http')) ? location.origin : 'http://localhost:5000';
         let socket;
         let currentUser = null;
 
@@ -829,7 +830,7 @@
             document.getElementById('username').textContent = currentUser.username;
 
             // Initialize WebSocket connection
-            initializeWebSocket();
+            initializeWebSocket(API_BASE);
             
             // Load initial data
             loadSystemStats();
@@ -838,8 +839,8 @@
             initializeCharts();
         });
 
-        function initializeWebSocket() {
-            socket = io(window.location.origin, { path: '/socket.io', transports: ['websocket'] });
+        function initializeWebSocket(API_BASE) {
+            socket = io(API_BASE, { path: '/socket.io' });
             
             socket.on('connect', function() {
                 document.getElementById('connection-status').innerHTML = 
@@ -877,7 +878,7 @@
         async function loadSystemStats() {
             try {
                 // Load recent threats history for alerts and seed charts
-                const threatsRes = await fetch('/api/threat-history');
+                const threatsRes = await fetch(`${API_BASE}/api/threat-history`);
                 const threatsData = await threatsRes.json();
                 if (threatsData && threatsData.success) {
                     loadAlerts(threatsData.threats);
@@ -890,7 +891,7 @@
                 }
 
                 // Load model/system stats
-                const modelRes = await fetch('/api/model-stats');
+                const modelRes = await fetch(`${API_BASE}/api/model-stats`);
                 const modelData = await modelRes.json();
                 if (modelData && modelData.success) {
                     // Show accuracy if provided
@@ -979,13 +980,17 @@
 
         function initializeCharts() {
             // Timeline chart
-            Plotly.newPlot('threat-timeline', [{ x: [], y: [], type: 'scatter', mode: 'lines+markers', name: 'Threats Detected', line: { color: '#ef4444' }, marker: { color: '#ef4444' } }], {
-                title: { text: 'Real-time Threat Detection', font: { color: 'var(--text-primary)' } },
-                xaxis: { title: 'Time', color: 'var(--text-secondary)' },
-                yaxis: { title: 'Threat Count', color: 'var(--text-secondary)' },
+            Plotly.newPlot('threat-timeline', [
+                { x: [], y: [], type: 'scatter', mode: 'lines+markers', name: 'Threats Detected', line: { color: '#ef4444', width: 3 }, marker: { color: '#ef4444', size: 8 } }
+            ], {
+                title: { text: '<b>Real-time Threat Detection</b>', font: { color: '#ffffff', size: 22 } },
+                xaxis: { title: { text: '<b>Time</b>', font: { size: 16, color: '#ffffff' } }, tickfont: { size: 14, color: '#ffffff' }, gridcolor: 'rgba(148,163,184,0.2)' },
+                yaxis: { title: { text: '<b>Threat Count</b>', font: { size: 16, color: '#ffffff' } }, tickfont: { size: 14, color: '#ffffff' }, gridcolor: 'rgba(148,163,184,0.2)' },
+                legend: { font: { size: 14, color: '#ffffff' } },
                 paper_bgcolor: 'rgba(0,0,0,0)',
                 plot_bgcolor: 'rgba(0,0,0,0)',
-                font: { color: 'var(--text-secondary)' }
+                font: { color: '#ffffff', size: 14 },
+                margin: { l: 60, r: 30, t: 60, b: 60 }
             });
 
             // Attack type bar chart
@@ -1004,12 +1009,13 @@
                 type: 'bar',
                 marker: { color: '#3b82f6' }
             }], {
-                title: { text: 'Intrusion Types', font: { color: 'var(--text-primary)' } },
-                xaxis: { color: 'var(--text-secondary)' },
-                yaxis: { color: 'var(--text-secondary)', title: 'Count' },
+                title: { text: '<b>Intrusion Types</b>', font: { color: '#ffffff', size: 22 } },
+                xaxis: { title: { text: '<b>Type</b>', font: { size: 16, color: '#ffffff' } }, tickfont: { size: 14, color: '#ffffff' } },
+                yaxis: { title: { text: '<b>Count</b>', font: { size: 16, color: '#ffffff' } }, tickfont: { size: 14, color: '#ffffff' } },
                 paper_bgcolor: 'rgba(0,0,0,0)',
                 plot_bgcolor: 'rgba(0,0,0,0)',
-                font: { color: 'var(--text-secondary)' }
+                font: { color: '#ffffff', size: 14 },
+                margin: { l: 60, r: 30, t: 60, b: 60 }
             });
         }
 
@@ -1020,12 +1026,16 @@
                 labels: labels,
                 values: values,
                 type: 'pie',
-                marker: { colors: ['#ef4444', '#f59e0b', '#fde047', '#10b981'] }
+                marker: { colors: ['#ef4444', '#f59e0b', '#fde047', '#10b981'] },
+                textinfo: 'label+percent',
+                textfont: { size: 16, color: '#ffffff' }
             }], {
-                title: { text: 'Severity Breakdown', font: { color: 'var(--text-primary)' } },
+                title: { text: '<b>Severity Breakdown</b>', font: { color: '#ffffff', size: 22 } },
                 paper_bgcolor: 'rgba(0,0,0,0)',
                 plot_bgcolor: 'rgba(0,0,0,0)',
-                font: { color: 'var(--text-secondary)' }
+                font: { color: '#ffffff', size: 14 },
+                legend: { font: { size: 14, color: '#ffffff' } },
+                margin: { l: 30, r: 30, t: 60, b: 30 }
             });
         }
 
@@ -1072,7 +1082,7 @@
                 }
 
                 // Send data to backend for analysis
-                const response = await fetch('http://localhost:5000/api/predict', {
+                const response = await fetch(`${API_BASE}/api/predict`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
